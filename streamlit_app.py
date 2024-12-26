@@ -24,7 +24,7 @@ class PDF(FPDF):
             self.ln(5)
 
     def encode_text(self, text):
-        return text.encode('latin-1', 'replace').decode('latin-1')
+        return text.encode('latin-1', 'replace').decode('latin-1').replace('?', '€')
 
 # Créer un tableau de données vide avec des colonnes prédéfinies
 def create_empty_dataframe():
@@ -34,7 +34,7 @@ def create_empty_dataframe():
 
 # Interface principale
 def main():
-    st.set_page_config(page_title="PERPI NP - Santé", page_icon="💉🗒️", layout="centered")
+    st.set_page_config(page_title="PERPI NP - Santé", page_icon="🩺", layout="centered")
     st.title("🩺 PERPI NP - Gestion des Patients")
 
     if "data" not in st.session_state:
@@ -65,7 +65,7 @@ def main():
     st.write("### Données Actuelles")
     st.dataframe(st.session_state.data)
 
-    if st.button("Imprime ta facture fry !"):
+    if st.button("Valider et Générer le PDF"):
         if st.session_state.data.empty:
             st.error("Veuillez remplir au moins une ligne avant de valider.")
         else:
@@ -87,7 +87,7 @@ def generate_pdf(data):
         st.download_button(
             label="📥 Télécharger la Facture (PDF)",
             data=file,
-            file_name="facture_du_fry.pdf",
+            file_name="facture_sante.pdf",
             mime="application/pdf"
         )
 
