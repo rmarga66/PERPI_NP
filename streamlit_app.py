@@ -38,7 +38,7 @@ def create_empty_dataframe():
 
 # Interface principale
 def main():
-    st.set_page_config(page_title="PERPI NP - Santé", page_icon="🩺", layout="centered")
+    st.set_page_config(page_title="PERPI NP - Santé", page_icon="👩🏻‍⚕️", layout="centered")
     st.markdown(
         """
         <style>
@@ -62,7 +62,7 @@ def main():
         unsafe_allow_html=True,
     )
 
-    st.title("🩺 PERPI NP - Gestion des Patients")
+    st.title("👩🏻‍⚕️ PERPI NP - Gestion des Patients")
 
     if "data" not in st.session_state:
         st.session_state.data = create_empty_dataframe()
@@ -86,13 +86,13 @@ def main():
                 "Montant HT": [f"{prix:.2f}"]
             })
             st.session_state.data = pd.concat([st.session_state.data, new_row], ignore_index=True)
-            st.success("Données ajoutées avec succès !")
+            st.success("C'est la capitale, c'est Perpi Bébé !")
 
     # Afficher les données saisies
     st.write("### Données Actuelles")
     st.dataframe(st.session_state.data)
 
-    if st.button("Valider et Générer le PDF"):
+    if st.button("Valider et Générer le PDF avant ta shtoumpe !"):
         if st.session_state.data.empty:
             st.error("Veuillez remplir au moins une ligne avant de valider.")
         else:
@@ -112,9 +112,9 @@ def generate_pdf(data):
 
     with open(pdf_output, "rb") as file:
         st.download_button(
-            label="📥 Télécharger la Facture (PDF)",
+            label="📥 Télécharger la Facture le Fry (PDF)",
             data=file,
-            file_name="facture_sante.pdf",
+            file_name="facture_fry_sante.pdf",
             mime="application/pdf"
         )
 
