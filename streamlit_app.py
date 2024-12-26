@@ -42,12 +42,20 @@ def main():
     st.markdown(
         """
         <style>
-        .main {
+        body {
             background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,0,1) 100%);
+            background-attachment: fixed;
+            color: black;
         }
         .stButton>button {
             background-color: #FF0000;
             color: white;
+            border-radius: 5px;
+        }
+        .stMarkdown {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
         }
         </style>
         """,
