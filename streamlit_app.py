@@ -6,7 +6,7 @@ from fpdf import FPDF
 class PDF(FPDF):
     def header(self):
         self.set_font('Arial', 'B', 12)
-        self.cell(0, 10, 'PERPI NP - Document de Santé', 0, 1, 'C')
+        self.cell(0, 10, 'PERPI NP - Facture de Santé', 0, 1, 'C')
         self.ln(10)
 
     def footer(self):
@@ -14,16 +14,19 @@ class PDF(FPDF):
         self.set_font('Arial', 'I', 8)
         self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
 
-    def add_table(self, data):
+    def add_invoice(self, data):
         self.set_font('Arial', '', 12)
         for i, row in data.iterrows():
-            for col in row:
-                self.cell(40, 10, str(col), border=1)
-            self.ln()
+            self.cell(0, 10, f"Nom / Prénom du Patient: {row['Nom / Prénom du Patient']}", ln=True)
+            self.cell(0, 10, f"Date de naissance: {row['Date de naissance']}", ln=True)
+            self.cell(0, 10, f"Numero SAP: {row['Numero SAP']}", ln=True)
+            self.cell(0, 10, f"Traitement: {row['Traitement']}", ln=True)
+            self.cell(0, 10, f"Montant HT: {row['Montant HT']} €", ln=True)
+            self.ln(5)
 
 # Créer un tableau de données vide avec des colonnes prédéfinies
 def create_empty_dataframe():
-    columns = ["Nom / Prénom du Patient", "Date de naissance", "Numero SAP", "Traitement", "Montant HT"]  # Colonnes modifiées
+    columns = ["Nom / Prénom du Patient", "Date de naissance", "Numero SAP", "Traitement", "Montant HT"]
     data = pd.DataFrame(columns=columns)
     return data
 
@@ -41,19 +44,19 @@ def main():
     data = st.session_state.data
     with st.form("formulaire_patient"):
         nom = st.text_input("Nom / Prénom du Patient")
-        age = st.text_input("Date de naissance")
+        age = st.date_input("Date de naissance", format="DD/MM/YYYY")
         sap = st.text_input("Numero SAP")
         traitement = st.text_input("Traitement")
-        prix = st.text_input("Montant HT")
+        prix = st.number_input("Montant HT (€)", min_value=0.0, step=0.01)
         submit = st.form_submit_button("Ajouter")
 
         if submit:
             new_row = pd.DataFrame({
                 "Nom / Prénom du Patient": [nom],
-                "Date de naissance": [age],
+                "Date de naissance": [age.strftime("%d/%m/%Y")],
                 "Numero SAP": [sap],
                 "Traitement": [traitement],
-                "Montant HT": [prix]
+                "Montant HT": [f"{prix:.2f} €"]
             })
             st.session_state.data = pd.concat([st.session_state.data, new_row], ignore_index=True)
             st.success("Données ajoutées avec succès !")
@@ -73,18 +76,18 @@ def generate_pdf(data):
     pdf = PDF()
     pdf.add_page()
     pdf.set_font('Arial', 'B', 16)
-    pdf.cell(0, 10, 'Résumé des Données', 0, 1, 'C')
+    pdf.cell(0, 10, 'Facture Détailée', 0, 1, 'C')
     pdf.ln(10)
-    pdf.add_table(data)
+    pdf.add_invoice(data)
 
-    pdf_output = "output.pdf"
+    pdf_output = "facture_output.pdf"
     pdf.output(pdf_output)
 
     with open(pdf_output, "rb") as file:
         st.download_button(
-            label="📥 Télécharger le PDF",
+            label="📥 Télécharger la Facture (PDF)",
             data=file,
-            file_name="document_sante.pdf",
+            file_name="facture_sante.pdf",
             mime="application/pdf"
         )
 
