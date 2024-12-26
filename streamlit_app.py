@@ -67,7 +67,7 @@ def main():
     if "data" not in st.session_state:
         st.session_state.data = create_empty_dataframe()
 
-    st.write("### Remplissez les informations ci-dessous")
+    st.write("### Tu peux le faire axurit !")
 
     # Interface pour remplir les données ligne par ligne
     data = st.session_state.data
