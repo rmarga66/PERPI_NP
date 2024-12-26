@@ -23,7 +23,7 @@ class PDF(FPDF):
 
 # Créer un tableau de données vide avec des colonnes prédéfinies
 def create_empty_dataframe():
-    columns = ["Nom du Patient", "Âge", "Pathologie", "Traitement"]  # Exemples de colonnes liées à la santé
+    columns = ["Nom / Prénom du Patient", "Date de naissance", "Numero SAP", "Traitement", "Montant HT"]  # Colonnes modifiées
     data = pd.DataFrame(columns=columns)
     return data
 
@@ -40,7 +40,7 @@ def main():
     # Interface pour remplir les données ligne par ligne
     data = st.session_state.data
     with st.form("formulaire_patient"):
-        nom = st.text_input("Nom du Patient")
+        nom = st.text_input("Nom / Prénom du Patient")
         age = st.text_input("Date de naissance")
         sap = st.text_input("Numero SAP")
         traitement = st.text_input("Traitement")
@@ -53,7 +53,7 @@ def main():
                 "Date de naissance": [age],
                 "Numero SAP": [sap],
                 "Traitement": [traitement],
-                "Montant HT" : [prix]
+                "Montant HT": [prix]
             })
             st.session_state.data = pd.concat([st.session_state.data, new_row], ignore_index=True)
             st.success("Données ajoutées avec succès !")
