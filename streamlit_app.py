@@ -5,16 +5,20 @@ from fpdf import FPDF
 # Créer une classe pour générer le PDF
 class PDF(FPDF):
     def header(self):
+        self.set_fill_color(255, 0, 0)  # Couleur rouge pour le header
+        self.set_text_color(255, 255, 255)  # Texte en blanc
         self.set_font('Arial', 'B', 12)
-        self.cell(0, 10, 'PERPI NP - Facture de Santé', 0, 1, 'C')
+        self.cell(0, 10, 'PERPI NP - Facture de Santé', 0, 1, 'C', fill=True)
         self.ln(10)
 
     def footer(self):
         self.set_y(-15)
         self.set_font('Arial', 'I', 8)
+        self.set_text_color(255, 0, 0)  # Texte en rouge pour le footer
         self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
 
     def add_invoice(self, data):
+        self.set_text_color(0, 0, 0)  # Texte en noir pour les détails
         self.set_font('Arial', '', 12)
         for i, row in data.iterrows():
             self.cell(0, 10, self.encode_text(f"Nom / Prénom du Patient: {row['Nom / Prénom du Patient']}"), ln=True, border=0, align='L')
@@ -35,6 +39,25 @@ def create_empty_dataframe():
 # Interface principale
 def main():
     st.set_page_config(page_title="PERPI NP - Santé", page_icon="🩺", layout="centered")
+    st.markdown(
+        """
+        <style>
+        .main {
+            background-color: #FFCC00;
+        }
+        .css-1d391kg {
+            background-color: #FFCC00;
+        }
+        .stButton>button {
+            background-color: #FF0000;
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.image("https://upload.wikimedia.org/wikipedia/commons/5/50/Health_care_icon.png", width=100)
     st.title("🩺 PERPI NP - Gestion des Patients")
 
     if "data" not in st.session_state:
