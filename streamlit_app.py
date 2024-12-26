@@ -1,24 +1,26 @@
 import streamlit as st
 import pandas as pd
 
-# Charger le fichier Excel
-def load_excel(file):
-    return pd.read_excel(file)
+# Créer un tableau de données vide avec des colonnes prédéfinies
+def create_empty_dataframe():
+    columns = ["Colonne 1", "Colonne 2", "Colonne 3"]  # Remplacez par vos colonnes
+    data = pd.DataFrame(columns=columns)
+    return data
 
 # Fonction pour éditer les champs dans les colonnes
 def edit_dataframe(data):
     edited_data = st.experimental_data_editor(data, use_container_width=True)
     return edited_data
 
-# Chargement du fichier Excel téléchargé
-uploaded_file = st.file_uploader("Téléversez votre fichier Excel", type="xlsx")
-if uploaded_file:
-    data = load_excel(uploaded_file)
-    st.write("### Aperçu des données chargées et modifiables")
-    edited_data = edit_dataframe(data)
+# Créer un tableau initial vide
+if "data" not in st.session_state:
+    st.session_state.data = create_empty_dataframe()
 
-    # Enregistrer les données modifiées en mémoire
-    st.session_state["modified_data"] = edited_data
-    st.write("Les données modifiées sont maintenant sauvegardées en mémoire.")
-else:
-    st.write("Veuillez téléverser un fichier Excel pour commencer.")
+st.write("### Remplissez les champs des colonnes")
+
+data = edit_dataframe(st.session_state.data)
+
+# Enregistrer les données modifiées
+st.session_state.data = data
+
+st.write("Les données modifiées sont sauvegardées en mémoire.")
