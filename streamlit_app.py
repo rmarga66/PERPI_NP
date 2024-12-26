@@ -41,15 +41,21 @@ def main():
     data = st.session_state.data
     with st.form("formulaire_patient"):
         nom = st.text_input("Nom du Patient")
-        age = st.number_input("Âge", min_value=0, step=1)
-        pathologie = st.text_input("Pathologie")
+        age = st.text_input("Date de naissance")
+        sap = st.text_input("Numero SAP")
         traitement = st.text_input("Traitement")
+        prix = st.text_input("Montant HT")
         submit = st.form_submit_button("Ajouter")
 
         if submit:
-            new_row = {"Nom du Patient": nom, "Âge": age, "Pathologie": pathologie, "Traitement": traitement}
-            data = data.append(new_row, ignore_index=True)
-            st.session_state.data = data
+            new_row = pd.DataFrame({
+                "Nom / Prénom du Patient": [nom],
+                "Date de naissance": [age],
+                "Numero SAP": [sap],
+                "Traitement": [traitement],
+                "Montant HT" : [prix]
+            })
+            st.session_state.data = pd.concat([st.session_state.data, new_row], ignore_index=True)
             st.success("Données ajoutées avec succès !")
 
     # Afficher les données saisies
