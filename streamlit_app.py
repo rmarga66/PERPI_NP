@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from fpdf import FPDF
+from datetime import datetime
 
 # Créer une classe pour générer le PDF
 class PDF(FPDF):
@@ -30,6 +31,10 @@ def create_empty_dataframe():
     data = pd.DataFrame(columns=columns)
     return data
 
+# Fonction pour formater la date
+def format_date(date):
+    return date.strftime("%d %B %Y")
+
 # Interface principale
 def main():
     st.set_page_config(page_title="PERPI NP - Santé", page_icon="🩺", layout="centered")
@@ -53,7 +58,7 @@ def main():
         if submit:
             new_row = pd.DataFrame({
                 "Nom / Prénom du Patient": [nom],
-                "Date de naissance": [age.strftime("%d/%m/%Y")],
+                "Date de naissance": [format_date(age)],
                 "Numero SAP": [sap],
                 "Traitement": [traitement],
                 "Montant HT": [f"{prix:.2f}"]
