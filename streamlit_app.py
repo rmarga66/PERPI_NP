@@ -43,10 +43,7 @@ def main():
         """
         <style>
         .main {
-            background-color: #FFCC00;
-        }
-        .css-1d391kg {
-            background-color: #FFCC00;
+            background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,0,1) 100%);
         }
         .stButton>button {
             background-color: #FF0000;
@@ -57,7 +54,6 @@ def main():
         unsafe_allow_html=True,
     )
 
-    st.image("https://upload.wikimedia.org/wikipedia/commons/5/50/Health_care_icon.png", width=100)
     st.title("🩺 PERPI NP - Gestion des Patients")
 
     if "data" not in st.session_state:
