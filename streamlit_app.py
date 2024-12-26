@@ -67,7 +67,7 @@ def main():
     if "data" not in st.session_state:
         st.session_state.data = create_empty_dataframe()
 
-    st.write("### Tu peux le faire axurit !")
+    st.write("### C'est tarpin facile à remplir !")
 
     # Interface pour remplir les données ligne par ligne
     data = st.session_state.data
@@ -86,13 +86,13 @@ def main():
                 "Montant HT": [f"{prix:.2f}"]
             })
             st.session_state.data = pd.concat([st.session_state.data, new_row], ignore_index=True)
-            st.success("C'est la capitale, c'est Perpi Bébé !")
+            st.success("C'est Perpi Bébé !")
 
     # Afficher les données saisies
     st.write("### Données Actuelles")
     st.dataframe(st.session_state.data)
 
-    if st.button("Valider et Générer le PDF avant ta shtoumpe !"):
+    if st.button("Valide avant ta shtoumpe !"):
         if st.session_state.data.empty:
             st.error("Veuillez remplir au moins une ligne avant de valider.")
         else:
@@ -103,7 +103,7 @@ def generate_pdf(data):
     pdf = PDF()
     pdf.add_page()
     pdf.set_font('Arial', 'B', 16)
-    pdf.cell(0, 10, 'Facture Détailée', 0, 1, 'C')
+    pdf.cell(0, 10, 'Fiche Patient', 0, 1, 'C')
     pdf.ln(10)
     pdf.add_invoice(data)
 
@@ -112,7 +112,7 @@ def generate_pdf(data):
 
     with open(pdf_output, "rb") as file:
         st.download_button(
-            label="📥 Télécharger la Facture le Fry (PDF)",
+            label="📥 Télécharge la Facture le Fry (PDF)",
             data=file,
             file_name="facture_fry_sante.pdf",
             mime="application/pdf"
