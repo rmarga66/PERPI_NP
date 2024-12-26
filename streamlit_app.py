@@ -20,11 +20,11 @@ class PDF(FPDF):
             self.cell(0, 10, self.encode_text(f"Nom / Prénom du Patient: {row['Nom / Prénom du Patient']}"), ln=True, border=0, align='L')
             self.cell(0, 10, self.encode_text(f"Numero SAP: {row['Numero SAP']}"), ln=True, border=0, align='L')
             self.cell(0, 10, self.encode_text(f"Traitement: {row['Traitement']}"), ln=True, border=0, align='L')
-            self.cell(0, 10, self.encode_text(f"Montant HT: {row['Montant HT']} €"), ln=True, border=0, align='L')
+            self.cell(0, 10, self.encode_text(f"Montant HT: {row['Montant HT']}"), ln=True, border=0, align='L')
             self.ln(5)
 
     def encode_text(self, text):
-        return text.encode('latin-1', 'replace').decode('latin-1').replace('?', '€')
+        return text.encode('latin-1', 'replace').decode('latin-1')
 
 # Créer un tableau de données vide avec des colonnes prédéfinies
 def create_empty_dataframe():
@@ -48,7 +48,7 @@ def main():
         nom = st.text_input("Nom / Prénom du Patient")
         sap = st.text_input("Numero SAP")
         traitement = st.text_input("Traitement")
-        prix = st.number_input("Montant HT (€)", min_value=0.0, step=0.01)
+        prix = st.number_input("Montant HT", min_value=0.0, step=0.01)
         submit = st.form_submit_button("Ajouter")
 
         if submit:
