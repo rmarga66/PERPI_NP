@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from fpdf import FPDF
-from datetime import datetime
 
 # Créer une classe pour générer le PDF
 class PDF(FPDF):
@@ -19,7 +18,6 @@ class PDF(FPDF):
         self.set_font('Arial', '', 12)
         for i, row in data.iterrows():
             self.cell(0, 10, f"Nom / Prénom du Patient: {row['Nom / Prénom du Patient']}", ln=True, border=0, align='L')
-            self.cell(0, 10, f"Date de naissance: {row['Date de naissance']}", ln=True, border=0, align='L')
             self.cell(0, 10, f"Numero SAP: {row['Numero SAP']}", ln=True, border=0, align='L')
             self.cell(0, 10, f"Traitement: {row['Traitement']}", ln=True, border=0, align='L')
             self.cell(0, 10, f"Montant HT: {row['Montant HT']} €", ln=True, border=0, align='L')
@@ -27,13 +25,9 @@ class PDF(FPDF):
 
 # Créer un tableau de données vide avec des colonnes prédéfinies
 def create_empty_dataframe():
-    columns = ["Nom / Prénom du Patient", "Date de naissance", "Numero SAP", "Traitement", "Montant HT"]
+    columns = ["Nom / Prénom du Patient", "Numero SAP", "Traitement", "Montant HT"]
     data = pd.DataFrame(columns=columns)
     return data
-
-# Fonction pour formater la date
-def format_date(date):
-    return date.strftime("%d %B %Y")
 
 # Interface principale
 def main():
@@ -49,7 +43,6 @@ def main():
     data = st.session_state.data
     with st.form("formulaire_patient"):
         nom = st.text_input("Nom / Prénom du Patient")
-        age = st.date_input("Date de naissance")
         sap = st.text_input("Numero SAP")
         traitement = st.text_input("Traitement")
         prix = st.number_input("Montant HT (€)", min_value=0.0, step=0.01)
@@ -58,7 +51,6 @@ def main():
         if submit:
             new_row = pd.DataFrame({
                 "Nom / Prénom du Patient": [nom],
-                "Date de naissance": [format_date(age)],
                 "Numero SAP": [sap],
                 "Traitement": [traitement],
                 "Montant HT": [f"{prix:.2f}"]
