@@ -17,11 +17,14 @@ class PDF(FPDF):
     def add_invoice(self, data):
         self.set_font('Arial', '', 12)
         for i, row in data.iterrows():
-            self.cell(0, 10, f"Nom / Prénom du Patient: {row['Nom / Prénom du Patient']}", ln=True, border=0, align='L')
-            self.cell(0, 10, f"Numero SAP: {row['Numero SAP']}", ln=True, border=0, align='L')
-            self.cell(0, 10, f"Traitement: {row['Traitement']}", ln=True, border=0, align='L')
-            self.cell(0, 10, f"Montant HT: {row['Montant HT']} €", ln=True, border=0, align='L')
+            self.cell(0, 10, self.encode_text(f"Nom / Prénom du Patient: {row['Nom / Prénom du Patient']}"), ln=True, border=0, align='L')
+            self.cell(0, 10, self.encode_text(f"Numero SAP: {row['Numero SAP']}"), ln=True, border=0, align='L')
+            self.cell(0, 10, self.encode_text(f"Traitement: {row['Traitement']}"), ln=True, border=0, align='L')
+            self.cell(0, 10, self.encode_text(f"Montant HT: {row['Montant HT']} €"), ln=True, border=0, align='L')
             self.ln(5)
+
+    def encode_text(self, text):
+        return text.encode('latin-1', 'replace').decode('latin-1')
 
 # Créer un tableau de données vide avec des colonnes prédéfinies
 def create_empty_dataframe():
