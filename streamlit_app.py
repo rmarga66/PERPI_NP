@@ -27,16 +27,6 @@ def create_empty_dataframe():
     data = pd.DataFrame(columns=columns)
     return data
 
-# Fonction pour éditer les champs dans les colonnes
-def edit_dataframe(data):
-    try:
-        edited_data = st.experimental_data_editor(data, use_container_width=True)
-        return edited_data
-    except Exception as e:
-        st.error("Une erreur s'est produite avec l'éditeur de données : ")
-        st.error(str(e))
-        return data
-
 # Interface principale
 def main():
     st.set_page_config(page_title="PERPI NP - Santé", page_icon="🩺", layout="centered")
@@ -46,14 +36,31 @@ def main():
         st.session_state.data = create_empty_dataframe()
 
     st.write("### Remplissez les informations ci-dessous")
-    data = edit_dataframe(st.session_state.data)
-    st.session_state.data = data
+
+    # Interface pour remplir les données ligne par ligne
+    data = st.session_state.data
+    with st.form("formulaire_patient"):
+        nom = st.text_input("Nom du Patient")
+        age = st.number_input("Âge", min_value=0, step=1)
+        pathologie = st.text_input("Pathologie")
+        traitement = st.text_input("Traitement")
+        submit = st.form_submit_button("Ajouter")
+
+        if submit:
+            new_row = {"Nom du Patient": nom, "Âge": age, "Pathologie": pathologie, "Traitement": traitement}
+            data = data.append(new_row, ignore_index=True)
+            st.session_state.data = data
+            st.success("Données ajoutées avec succès !")
+
+    # Afficher les données saisies
+    st.write("### Données Actuelles")
+    st.dataframe(st.session_state.data)
 
     if st.button("Valider et Générer le PDF"):
-        if data.empty:
+        if st.session_state.data.empty:
             st.error("Veuillez remplir au moins une ligne avant de valider.")
         else:
-            generate_pdf(data)
+            generate_pdf(st.session_state.data)
 
 # Générer un PDF à partir des données
 def generate_pdf(data):
