@@ -17,11 +17,11 @@ class PDF(FPDF):
     def add_invoice(self, data):
         self.set_font('Arial', '', 12)
         for i, row in data.iterrows():
-            self.cell(0, 10, f"Nom / Prénom du Patient: {row['Nom / Prénom du Patient']}", ln=True)
-            self.cell(0, 10, f"Date de naissance: {row['Date de naissance']}", ln=True)
-            self.cell(0, 10, f"Numero SAP: {row['Numero SAP']}", ln=True)
-            self.cell(0, 10, f"Traitement: {row['Traitement']}", ln=True)
-            self.cell(0, 10, f"Montant HT: {row['Montant HT']} €", ln=True)
+            self.cell(0, 10, f"Nom / Prénom du Patient: {row['Nom / Prénom du Patient']}", ln=True, border=0, align='L')
+            self.cell(0, 10, f"Date de naissance: {row['Date de naissance']}", ln=True, border=0, align='L')
+            self.cell(0, 10, f"Numero SAP: {row['Numero SAP']}", ln=True, border=0, align='L')
+            self.cell(0, 10, f"Traitement: {row['Traitement']}", ln=True, border=0, align='L')
+            self.cell(0, 10, f"Montant HT: {row['Montant HT']} €", ln=True, border=0, align='L')
             self.ln(5)
 
 # Créer un tableau de données vide avec des colonnes prédéfinies
@@ -44,7 +44,7 @@ def main():
     data = st.session_state.data
     with st.form("formulaire_patient"):
         nom = st.text_input("Nom / Prénom du Patient")
-        age = st.date_input("Date de naissance", format="DD/MM/YYYY")
+        age = st.date_input("Date de naissance")
         sap = st.text_input("Numero SAP")
         traitement = st.text_input("Traitement")
         prix = st.number_input("Montant HT (€)", min_value=0.0, step=0.01)
@@ -56,7 +56,7 @@ def main():
                 "Date de naissance": [age.strftime("%d/%m/%Y")],
                 "Numero SAP": [sap],
                 "Traitement": [traitement],
-                "Montant HT": [f"{prix:.2f} €"]
+                "Montant HT": [f"{prix:.2f}"]
             })
             st.session_state.data = pd.concat([st.session_state.data, new_row], ignore_index=True)
             st.success("Données ajoutées avec succès !")
@@ -81,7 +81,7 @@ def generate_pdf(data):
     pdf.add_invoice(data)
 
     pdf_output = "facture_output.pdf"
-    pdf.output(pdf_output)
+    pdf.output(pdf_output, dest='F')
 
     with open(pdf_output, "rb") as file:
         st.download_button(
