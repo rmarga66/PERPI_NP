@@ -13,15 +13,22 @@ def load_excel(file):
 
 # Fonction pour envoyer un email
 def send_email(to_email, subject, body, attachment=None, attachment_name="attachment.xlsx"):
-    sender_email = "your_email@example.com"  # Remplacez par votre email
-    sender_password = "your_password"  # Remplacez par votre mot de passe
+    sender_email = "romainmargalet@gmail.com"  # Remplacez par votre email
+    sender_password = "oipm xjxx lyab obeq"  # Remplacez par votre mot de passe
 
     message = MIMEMultipart()
     message["From"] = sender_email
     message["To"] = to_email
     message["Subject"] = subject
 
-    message.attach(MIMEText(body, "plain"))
+    message.attach(MIMEText(body, "html"))
+
+    with smtplib.SMPT('smtp.gmail.com', 587) as server:
+                      server.starttls()
+                      server.login(expediteur, mot_de_passe)
+        server.send_message(msg)
+
+st.success("Email envoyé avec succès")
 
     if attachment:
         part = MIMEBase("application", "octet-stream")
