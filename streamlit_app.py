@@ -17,14 +17,8 @@ if uploaded_file:
     st.write("### Aperçu des données chargées et modifiables")
     edited_data = edit_dataframe(data)
 
-    # Bouton pour télécharger les données modifiées
-    if st.button("Télécharger les données modifiées"):
-        output = edited_data.to_excel(index=False, engine='openpyxl')
-        st.download_button(
-            label="Télécharger le fichier Excel modifié",
-            data=output,
-            file_name="fichier_modifie.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
+    # Enregistrer les données modifiées en mémoire
+    st.session_state["modified_data"] = edited_data
+    st.write("Les données modifiées sont maintenant sauvegardées en mémoire.")
 else:
     st.write("Veuillez téléverser un fichier Excel pour commencer.")
