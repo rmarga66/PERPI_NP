@@ -29,8 +29,13 @@ def create_empty_dataframe():
 
 # Fonction pour éditer les champs dans les colonnes
 def edit_dataframe(data):
-    edited_data = st.experimental_data_editor(data, use_container_width=True)
-    return edited_data
+    try:
+        edited_data = st.experimental_data_editor(data, use_container_width=True)
+        return edited_data
+    except Exception as e:
+        st.error("Une erreur s'est produite avec l'éditeur de données : ")
+        st.error(str(e))
+        return data
 
 # Interface principale
 def main():
